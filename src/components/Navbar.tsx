@@ -83,18 +83,6 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="ml-4"
-            >
-              <a
-                href="/#"
-                className="px-5 py-2 bg-maternal-600 text-white rounded-full text-sm font-medium shadow-sm hover:bg-maternal-700 transition-all duration-300"
-              >
-                Get the App
-              </a>
-            </motion.div>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -147,12 +135,6 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-            <a
-              href="/#"
-              className="px-4 py-2 bg-maternal-600 text-white rounded-md text-sm font-medium shadow-sm hover:bg-maternal-700 text-center mt-2"
-            >
-              Get the App
-            </a>
           </div>
         </div>
       </motion.div>
