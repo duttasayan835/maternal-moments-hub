@@ -1,8 +1,15 @@
-
 import { motion } from 'framer-motion';
 import PageTransition from '@/components/PageTransition';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
 
 const Pregnancy = () => {
   const pregnancyTopics = [
@@ -43,6 +50,101 @@ const Pregnancy = () => {
       link: "#"
     }
   ];
+
+  // Define pregnancy weeks in ascending order
+  const pregnancyWeeks = [
+    {
+      week: 5,
+      title: "5 Weeks Pregnant: Garbh Sanskar, Symptoms and Tips",
+      category: "Weeks and Trimesters",
+      date: "September 30, 2022",
+      image: "https://cdn.prod.website-files.com/630c4a66b123fb1a74ccb8a7/633816bdedd4565dc2f22958_63367ef11c6e2f88d9176502_week5.jpeg",
+      link: "/pregnancy-week/5"
+    },
+    {
+      week: 6,
+      title: "6 Weeks Pregnant: Garbh Sanskar, Symptoms and Tips",
+      category: "Weeks and Trimesters",
+      date: "September 30, 2022",
+      image: "https://cdn.prod.website-files.com/630c4a66b123fb1a74ccb8a7/633816bfc6e89fefb397173a_6336879d445b4c7be4556afb_week6%2520(1).jpeg",
+      link: "/pregnancy-week/6"
+    },
+    {
+      week: 7,
+      title: "7 Weeks Pregnant: Garbh Sanskar, Symptoms and Tips",
+      category: "Weeks and Trimesters",
+      date: "September 30, 2022",
+      image: "https://cdn.prod.website-files.com/630c4a66b123fb1a74ccb8a7/633816c2ad6a6dba6ff6c0bd_63368a88b9a6e92dc9d14b10_week7.jpeg",
+      link: "/pregnancy-week/7"
+    },
+    {
+      week: 8,
+      title: "8 Weeks Pregnant: Garbh Sanskar, Symptoms and Tips",
+      category: "Weeks and Trimesters",
+      date: "September 30, 2022",
+      image: "https://cdn.prod.website-files.com/630c4a66b123fb1a74ccb8a7/633816c50a9495621f364251_633690257e70db09812b41ff_week8.jpeg",
+      link: "/pregnancy-week/8"
+    },
+    {
+      week: 9,
+      title: "9 Weeks Pregnant: Garbh Sanskar, Symptoms and Tips",
+      category: "Weeks and Trimesters",
+      date: "September 30, 2022",
+      image: "https://cdn.prod.website-files.com/630c4a66b123fb1a74ccb8a7/633816c7c2d6b0f0f888145e_633691f97e70db7c6a2cb5fe_weeK9.jpeg",
+      link: "/pregnancy-week/9"
+    },
+    {
+      week: 10,
+      title: "10 Weeks Pregnant: Garbh Sanskar, Symptoms and Tips",
+      category: "Weeks and Trimesters",
+      date: "September 30, 2022",
+      image: "https://cdn.prod.website-files.com/630c4a66b123fb1a74ccb8a7/6338168d7b04fd3c2ac62388_63369414c9d071151c8adac0_weeK10.jpeg",
+      link: "/pregnancy-week/10"
+    },
+    {
+      week: 11,
+      title: "11 Weeks Pregnant: Garbh Sanskar, Symptoms and Tips",
+      category: "Weeks and Trimesters",
+      date: "September 30, 2022",
+      image: "https://cdn.prod.website-files.com/630c4a66b123fb1a74ccb8a7/6338168d7d3b906f4e8b578e_633696621e9b6f21564e1c1b_weeK11.jpeg",
+      link: "/pregnancy-week/11"
+    },
+    {
+      week: 12,
+      title: "12 Weeks Pregnant: Garbh Sanskar, Symptoms and Tips",
+      category: "Weeks and Trimesters",
+      date: "September 30, 2022",
+      image: "https://cdn.prod.website-files.com/630c4a66b123fb1a74ccb8a7/6338168df6ee972bb544af8b_63369730cf9a687b971bf6db_week12_baby.jpeg",
+      link: "/pregnancy-week/12-weeks-pregnant"
+    },
+    {
+      week: 14,
+      title: "14 Weeks Pregnant: Garbh Sanskar, Symptoms and Tips",
+      category: "Weeks and Trimesters",
+      date: "September 30, 2022",
+      image: "https://cdn.prod.website-files.com/630c4a66b123fb1a74ccb8a7/6338168d823f997271e6bcf3_63369c60445b4c1c33659302_week14.jpeg",
+      link: "/pregnancy-week/14"
+    },
+    {
+      week: 15,
+      title: "15 Weeks Pregnant: Garbh Sanskar, Symptoms and Tips",
+      category: "Weeks and Trimesters",
+      date: "September 30, 2022",
+      image: "https://cdn.prod.website-files.com/630c4a66b123fb1a74ccb8a7/6338168d3b99eceb045eb476_63369c791e9b6f9a34555f3e_week15.jpeg",
+      link: "/pregnancy-week/15"
+    },
+    {
+      week: 16,
+      title: "16 Weeks Pregnant: Garbh Sanskar, Symptoms and Tips",
+      category: "Weeks and Trimesters",
+      date: "September 30, 2022",
+      image: "https://cdn.prod.website-files.com/630c4a66b123fb1a74ccb8a7/6338168d3b99ec6f425eb479_63369ff298515ca375d0e844_week16.jpeg",
+      link: "/pregnancy-week/16"
+    }
+  ];
+
+  // Sort pregnancyWeeks by week number (ascending)
+  const sortedPregnancyWeeks = [...pregnancyWeeks].sort((a, b) => a.week - b.week);
 
   return (
     <PageTransition>
@@ -186,6 +288,86 @@ const Pregnancy = () => {
                 />
               </div>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pregnancy Week by Week Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4 md:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="max-w-3xl mx-auto text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-gray-900">
+              Pregnancy Week by Week
+            </h2>
+            <p className="mt-4 text-gray-700">
+              Follow your baby's development from weeks 5 to 40 with detailed guides
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {sortedPregnancyWeeks.map((week, index) => (
+              <motion.div
+                key={week.week}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="group"
+              >
+                <Card className="h-full hover:shadow-md transition-all">
+                  <div className="h-48 overflow-hidden">
+                    <img 
+                      src={week.image} 
+                      alt={week.title} 
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-display font-semibold text-gray-900 mb-2">
+                      {week.title}
+                    </h3>
+                    <div className="flex items-center mb-4">
+                      <span className="inline-block px-2 py-1 text-xs font-medium bg-maternal-100 text-maternal-700 rounded-full mr-2">{week.category}</span>
+                      <span className="text-sm text-gray-500">{week.date}</span>
+                    </div>
+                    <a href={week.link} className="inline-flex items-center text-maternal-600 font-medium">
+                      Read more
+                      <svg className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                      </svg>
+                    </a>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="mt-10 flex justify-center">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious href="#" />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#" isActive>1</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#">2</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#">3</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationNext href="#" />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
           </div>
         </div>
       </section>
