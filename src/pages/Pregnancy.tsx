@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion';
 import PageTransition from '@/components/PageTransition';
 import { Link } from 'react-router-dom';
+import { Card, CardContent } from '@/components/ui/card';
 
 const Pregnancy = () => {
   const pregnancyTopics = [
@@ -185,6 +186,244 @@ const Pregnancy = () => {
                 />
               </div>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* New Blog Article Listing Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4 md:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="max-w-3xl mx-auto text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-gray-900">
+              Pregnancy Resources
+            </h2>
+            <p className="mt-4 text-gray-700">
+              Expert articles, guides, and week-by-week pregnancy information
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Yoga for Expecting Moms */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="group"
+            >
+              <Card className="h-full hover:shadow-md transition-all">
+                <div className="h-48 overflow-hidden">
+                  <img 
+                    src="https://cdn.prod.website-files.com/630c4a66b123fb1a74ccb8a7/651aff6368770316aff12a7f_Cover.jpg" 
+                    alt="Yoga for Expecting Moms" 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-display font-semibold text-gray-900 mb-2">
+                    Yoga for Expecting Moms: Asanas to Adopt & Avoid
+                  </h3>
+                  <div className="flex items-center mb-4">
+                    <span className="inline-block px-2 py-1 text-xs font-medium bg-maternal-100 text-maternal-700 rounded-full mr-2">Complications</span>
+                    <span className="text-sm text-gray-500">June 12, 2023</span>
+                  </div>
+                  <a href="/post/yoga-for-expecting-moms-asanas-to-adopt-avoid" className="inline-flex items-center text-maternal-600 font-medium">
+                    Read more
+                    <svg className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </a>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Don't Ignore Itching in Pregnancy */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="group"
+            >
+              <Card className="h-full hover:shadow-md transition-all">
+                <div className="h-48 overflow-hidden">
+                  <img 
+                    src="https://cdn.prod.website-files.com/630c4a66b123fb1a74ccb8a7/651affeabf28071b79e174e6_Cover.jpg" 
+                    alt="Don't Ignore Itching in Pregnancy" 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-display font-semibold text-gray-900 mb-2">
+                    Don't Ignore Itching in Pregnancy
+                  </h3>
+                  <div className="flex items-center mb-4">
+                    <span className="inline-block px-2 py-1 text-xs font-medium bg-maternal-100 text-maternal-700 rounded-full mr-2">Complications</span>
+                    <span className="text-sm text-gray-500">June 12, 2023</span>
+                  </div>
+                  <a href="/post/dont-ignore-itching-in-pregnancy" className="inline-flex items-center text-maternal-600 font-medium">
+                    Read more
+                    <svg className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </a>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Boosting Hemoglobin Levels */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="group"
+            >
+              <Card className="h-full hover:shadow-md transition-all">
+                <div className="h-48 overflow-hidden">
+                  <img 
+                    src="https://cdn.prod.website-files.com/630c4a66b123fb1a74ccb8a7/6508970fcca17508fff222ca_cover1.jpg" 
+                    alt="Boosting Hemoglobin Levels" 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-display font-semibold text-gray-900 mb-2">
+                    Boosting Hemoglobin Levels for a Healthy Pregnancy
+                  </h3>
+                  <div className="flex items-center mb-4">
+                    <span className="inline-block px-2 py-1 text-xs font-medium bg-maternal-100 text-maternal-700 rounded-full mr-2">Complications</span>
+                    <span className="text-sm text-gray-500">June 12, 2023</span>
+                  </div>
+                  <a href="/post/boosting-hemoglobin-levels-for-a-healthy-pregnancy" className="inline-flex items-center text-maternal-600 font-medium">
+                    Read more
+                    <svg className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </a>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* 9 Weeks Pregnant */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="group"
+            >
+              <Card className="h-full hover:shadow-md transition-all">
+                <div className="h-48 overflow-hidden">
+                  <img 
+                    src="https://cdn.prod.website-files.com/630c4a66b123fb1a74ccb8a7/633816c7c2d6b0f0f888145e_633691f97e70db7c6a2cb5fe_weeK9.jpeg" 
+                    alt="9 Weeks Pregnant" 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-display font-semibold text-gray-900 mb-2">
+                    9 Weeks Pregnant: Garbh Sanskar, Symptoms and Tips
+                  </h3>
+                  <div className="flex items-center mb-4">
+                    <span className="inline-block px-2 py-1 text-xs font-medium bg-maternal-100 text-maternal-700 rounded-full mr-2">Weeks and Trimesters</span>
+                    <span className="text-sm text-gray-500">September 30, 2022</span>
+                  </div>
+                  <a href="/pregnancy-week/9" className="inline-flex items-center text-maternal-600 font-medium">
+                    Read more
+                    <svg className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </a>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* 8 Weeks Pregnant */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="group"
+            >
+              <Card className="h-full hover:shadow-md transition-all">
+                <div className="h-48 overflow-hidden">
+                  <img 
+                    src="https://cdn.prod.website-files.com/630c4a66b123fb1a74ccb8a7/633816c50a9495621f364251_633690257e70db09812b41ff_week8.jpeg" 
+                    alt="8 Weeks Pregnant" 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-display font-semibold text-gray-900 mb-2">
+                    8 Weeks Pregnant: Garbh Sanskar, Symptoms and Tips
+                  </h3>
+                  <div className="flex items-center mb-4">
+                    <span className="inline-block px-2 py-1 text-xs font-medium bg-maternal-100 text-maternal-700 rounded-full mr-2">Weeks and Trimesters</span>
+                    <span className="text-sm text-gray-500">September 30, 2022</span>
+                  </div>
+                  <a href="/pregnancy-week/8" className="inline-flex items-center text-maternal-600 font-medium">
+                    Read more
+                    <svg className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </a>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* 7 Weeks Pregnant */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="group"
+            >
+              <Card className="h-full hover:shadow-md transition-all">
+                <div className="h-48 overflow-hidden">
+                  <img 
+                    src="https://cdn.prod.website-files.com/630c4a66b123fb1a74ccb8a7/633816c2ad6a6dba6ff6c0bd_63368a88b9a6e92dc9d14b10_week7.jpeg" 
+                    alt="7 Weeks Pregnant" 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-display font-semibold text-gray-900 mb-2">
+                    7 Weeks Pregnant: Garbh Sanskar, Symptoms and Tips
+                  </h3>
+                  <div className="flex items-center mb-4">
+                    <span className="inline-block px-2 py-1 text-xs font-medium bg-maternal-100 text-maternal-700 rounded-full mr-2">Weeks and Trimesters</span>
+                    <span className="text-sm text-gray-500">September 30, 2022</span>
+                  </div>
+                  <a href="/pregnancy-week/7" className="inline-flex items-center text-maternal-600 font-medium">
+                    Read more
+                    <svg className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </a>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
+
+          <div className="mt-12 text-center">
+            <Link
+              to="/blog"
+              className="inline-flex items-center justify-center px-6 py-3 bg-maternal-600 text-white rounded-full font-medium shadow-sm hover:bg-maternal-700 transition-colors"
+            >
+              View All Articles
+              <svg className="ml-2 w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </Link>
           </div>
         </div>
       </section>
