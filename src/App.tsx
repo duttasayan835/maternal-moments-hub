@@ -8,6 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import { ThemeProvider } from "./providers/ThemeProvider";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Index from "./pages/Index";
 import Home from "./pages/Home";
 import Pregnancy from "./pages/Pregnancy";
 import Parenting from "./pages/Parenting";
@@ -32,7 +33,8 @@ const AnimatedRoutes = () => {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Index />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/pregnancy" element={<Pregnancy />} />
         <Route path="/parenting" element={<Parenting />} />
         <Route path="/research" element={<Research />} />

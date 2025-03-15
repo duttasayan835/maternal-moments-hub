@@ -2,12 +2,20 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Moon, Sun, LogIn } from 'lucide-react';
+import { Moon, Sun, LogIn, LogOut, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/providers/ThemeProvider';
 import AuthModal from './auth/AuthModal';
 import { supabase } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -84,7 +92,7 @@ const Navbar = () => {
   };
 
   const navLinks = [
-    { path: '/', label: 'Home' },
+    { path: '/home', label: 'Home' },
     { path: '/pregnancy', label: 'Pregnancy' },
     { path: '/parenting', label: 'Parenting' },
     { path: '/research', label: 'Research' },
@@ -147,42 +155,61 @@ const Navbar = () => {
                 </Link>
               ))}
 
-              {/* Login/Signup Button */}
-              {isLoggedIn ? (
-                <div className="relative ml-4">
+              {/* User Menu */}
+              <div className="flex items-center space-x-2 pl-4">
+                {isLoggedIn ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" className="flex items-center gap-2">
+                        <User className="h-4 w-4" />
+                        <span className="hidden sm:inline">{username}</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        <Link to="/profile" className="w-full">Profile</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link to="/appointments" className="w-full">Appointments</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link to="/medical-records" className="w-full">Medical Records</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={handleLogout}>
+                        <LogOut className="mr-2 h-4 w-4" />
+                        <span>Logout</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
                   <Button 
                     variant="outline" 
-                    className="text-sm border-maternal-200 hover:bg-maternal-50 dark:border-maternal-800 dark:hover:bg-maternal-900"
-                    onClick={handleLogout}
+                    className="border-maternal-200 hover:bg-maternal-50 dark:border-maternal-800 dark:hover:bg-maternal-900"
+                    onClick={() => setIsAuthModalOpen(true)}
                   >
-                    Logout {username && `(${username})`}
+                    <LogIn className="mr-2 h-4 w-4" />
+                    <span className="hidden sm:inline">Login / Signup</span>
                   </Button>
-                </div>
-              ) : (
-                <Button 
-                  variant="outline" 
-                  className="ml-4 text-sm border-maternal-200 hover:bg-maternal-50 dark:border-maternal-800 dark:hover:bg-maternal-900"
-                  onClick={() => setIsAuthModalOpen(true)}
-                >
-                  <LogIn className="mr-2 h-4 w-4" />
-                  Login / Signup
-                </Button>
-              )}
-
-              {/* Theme Toggle */}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="ml-2 rounded-full"
-                onClick={toggleTheme}
-                aria-label="Toggle theme"
-              >
-                {theme === 'light' ? (
-                  <Moon className="h-5 w-5" />
-                ) : (
-                  <Sun className="h-5 w-5" />
                 )}
-              </Button>
+
+                {/* Theme Toggle */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full"
+                  onClick={toggleTheme}
+                  aria-label="Toggle theme"
+                >
+                  {theme === 'light' ? (
+                    <Moon className="h-5 w-5" />
+                  ) : (
+                    <Sun className="h-5 w-5" />
+                  )}
+                </Button>
+              </div>
             </nav>
 
             {/* Mobile Menu Button */}
@@ -203,14 +230,25 @@ const Navbar = () => {
               </Button>
 
               {/* Login/Signup Button for Mobile */}
-              <Button 
-                variant="ghost" 
-                size="icon"
-                className="mr-2 rounded-full"
-                onClick={() => setIsAuthModalOpen(true)}
-              >
-                <LogIn className="h-5 w-5" />
-              </Button>
+              {isLoggedIn ? (
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  className="mr-2 rounded-full"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="h-5 w-5" />
+                </Button>
+              ) : (
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  className="mr-2 rounded-full"
+                  onClick={() => setIsAuthModalOpen(true)}
+                >
+                  <LogIn className="h-5 w-5" />
+                </Button>
+              )}
 
               {/* Hamburger Menu */}
               <button
@@ -266,17 +304,37 @@ const Navbar = () => {
               
               {/* Login status for mobile */}
               {isLoggedIn ? (
-                <Button 
-                  variant="outline" 
-                  className="text-sm border-maternal-200 hover:bg-maternal-50"
-                  onClick={handleLogout}
-                >
-                  Logout {username && `(${username})`}
-                </Button>
+                <div className="space-y-2 border-t pt-2 mt-2">
+                  <div className="px-4 py-1 text-sm font-medium text-gray-500">
+                    Signed in as {username}
+                  </div>
+                  <Link
+                    to="/profile"
+                    onClick={closeMobileMenu}
+                    className="px-4 py-2 rounded-md text-sm font-medium block"
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    to="/appointments"
+                    onClick={closeMobileMenu}
+                    className="px-4 py-2 rounded-md text-sm font-medium block"
+                  >
+                    Appointments
+                  </Link>
+                  <Button 
+                    variant="outline" 
+                    className="w-full text-sm border-maternal-200 hover:bg-maternal-50"
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Logout
+                  </Button>
+                </div>
               ) : (
                 <Button 
                   variant="outline" 
-                  className="text-sm border-maternal-200 hover:bg-maternal-50"
+                  className="w-full text-sm border-maternal-200 hover:bg-maternal-50"
                   onClick={() => {
                     setIsAuthModalOpen(true);
                     closeMobileMenu();
