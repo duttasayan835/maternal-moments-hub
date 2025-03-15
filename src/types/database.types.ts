@@ -58,7 +58,147 @@ export interface Database {
           created_at?: string;
         };
       };
-      // Additional tables from the schema would be defined here
+      medical_images: {
+        Row: {
+          id: number;
+          user_id: number;
+          image_path: string;
+          upload_date: string;
+          status: 'pending' | 'analyzed' | 'reviewed' | 'failed';
+          modality: 'Ultrasound' | 'X-ray' | 'MRI' | 'CT';
+          ai_analysis_status: boolean;
+          scan_details?: string;
+          image_format?: string;
+          resolution?: string;
+          scan_notes?: string;
+        };
+        Insert: {
+          id?: number;
+          user_id: number;
+          image_path: string;
+          upload_date?: string;
+          status?: 'pending' | 'analyzed' | 'reviewed' | 'failed';
+          modality: 'Ultrasound' | 'X-ray' | 'MRI' | 'CT';
+          ai_analysis_status?: boolean;
+          scan_details?: string;
+          image_format?: string;
+          resolution?: string;
+          scan_notes?: string;
+        };
+        Update: {
+          id?: number;
+          user_id?: number;
+          image_path?: string;
+          upload_date?: string;
+          status?: 'pending' | 'analyzed' | 'reviewed' | 'failed';
+          modality?: 'Ultrasound' | 'X-ray' | 'MRI' | 'CT';
+          ai_analysis_status?: boolean;
+          scan_details?: string;
+          image_format?: string;
+          resolution?: string;
+          scan_notes?: string;
+        };
+      };
+      analysis_results: {
+        Row: {
+          id: number;
+          image_id: number;
+          diagnosis: string;
+          confidence_score: number;
+          generated_at: string;
+          ai_model_version: string;
+          additional_notes?: string;
+          doctor_verified: boolean;
+          follow_up_recommendation?: string;
+        };
+        Insert: {
+          id?: number;
+          image_id: number;
+          diagnosis: string;
+          confidence_score: number;
+          generated_at?: string;
+          ai_model_version: string;
+          additional_notes?: string;
+          doctor_verified?: boolean;
+          follow_up_recommendation?: string;
+        };
+        Update: {
+          id?: number;
+          image_id?: number;
+          diagnosis?: string;
+          confidence_score?: number;
+          generated_at?: string;
+          ai_model_version?: string;
+          additional_notes?: string;
+          doctor_verified?: boolean;
+          follow_up_recommendation?: string;
+        };
+      };
+      doctor_reviews: {
+        Row: {
+          id: number;
+          image_id: number;
+          doctor_id?: number;
+          comments?: string;
+          verified_at: string;
+          severity: 'low' | 'moderate' | 'high';
+          recommended_tests?: string;
+          follow_up_required: boolean;
+          additional_recommendations?: string;
+        };
+        Insert: {
+          id?: number;
+          image_id: number;
+          doctor_id?: number;
+          comments?: string;
+          verified_at?: string;
+          severity: 'low' | 'moderate' | 'high';
+          recommended_tests?: string;
+          follow_up_required?: boolean;
+          additional_recommendations?: string;
+        };
+        Update: {
+          id?: number;
+          image_id?: number;
+          doctor_id?: number;
+          comments?: string;
+          verified_at?: string;
+          severity?: 'low' | 'moderate' | 'high';
+          recommended_tests?: string;
+          follow_up_required?: boolean;
+          additional_recommendations?: string;
+        };
+      };
+      chatbot_conversations: {
+        Row: {
+          id: number;
+          user_id: number;
+          message: string;
+          response: string;
+          timestamp: string;
+          session_id?: string;
+          chatbot_version?: string;
+        };
+        Insert: {
+          id?: number;
+          user_id: number;
+          message: string;
+          response: string;
+          timestamp?: string;
+          session_id?: string;
+          chatbot_version?: string;
+        };
+        Update: {
+          id?: number;
+          user_id?: number;
+          message?: string;
+          response?: string;
+          timestamp?: string;
+          session_id?: string;
+          chatbot_version?: string;
+        };
+      };
+      // Additional tables would follow the same pattern
     };
   };
 }

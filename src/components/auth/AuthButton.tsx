@@ -4,23 +4,21 @@ import { LogIn, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AuthModal from './AuthModal';
 import { useToast } from '@/hooks/use-toast';
+import { isSupabaseConfigured } from '@/lib/supabase';
 
 export default function AuthButton() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { toast } = useToast();
 
   const handleAuthClick = () => {
-    // Check if Supabase credentials are set
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-    if (!supabaseUrl || !supabaseKey) {
+    // Check if Supabase credentials are properly configured
+    if (!isSupabaseConfigured()) {
       toast({
         title: "Configuration Required",
         description: "Supabase credentials are not set. Please configure the environment variables.",
         variant: "destructive"
       });
-      console.warn("Supabase credentials missing. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your environment variables.");
+      console.warn("Supabase credentials missing or invalid.");
       return;
     }
 

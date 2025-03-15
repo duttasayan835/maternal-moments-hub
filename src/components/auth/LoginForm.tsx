@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { supabase } from '@/lib/supabase';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
 
 interface LoginFormProps {
@@ -34,10 +34,7 @@ export default function LoginForm({ onClose }: LoginFormProps) {
     setIsLoading(true);
 
     // Check if Supabase is properly configured
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-    if (!supabaseUrl || !supabaseKey) {
+    if (!isSupabaseConfigured()) {
       toast({
         title: "Authentication Error",
         description: "Backend configuration is incomplete. Please contact support.",
@@ -66,11 +63,13 @@ export default function LoginForm({ onClose }: LoginFormProps) {
       });
       
       onClose();
+      // Redirect to dashboard or home page after successful login
+      window.location.href = '/home';
     } catch (error: any) {
       console.error("Login failed:", error);
       toast({
         title: 'Login failed',
-        description: error.message || 'Please check your credentials and try again. If this issue persists, verify your Supabase configuration.',
+        description: error.message || 'Please check your credentials and try again.',
         variant: 'destructive',
       });
     } finally {
@@ -108,12 +107,6 @@ export default function LoginForm({ onClose }: LoginFormProps) {
             </FormItem>
           )}
         />
-
-        {!import.meta.env.VITE_SUPABASE_URL && (
-          <div className="text-xs text-amber-600 dark:text-amber-400 p-2 bg-amber-50 dark:bg-amber-900/20 rounded border border-amber-200 dark:border-amber-800">
-            Note: Authentication is currently in demo mode. Backend services are not fully configured.
-          </div>
-        )}
 
         <Button 
           type="submit" 

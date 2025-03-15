@@ -13,7 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { Checkbox } from '@/components/ui/checkbox';
-import { supabase } from '@/lib/supabase';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 
@@ -80,7 +80,20 @@ export default function SignupForm({ onClose }: SignupFormProps) {
   const handleSignup = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
 
+    // Check if Supabase is properly configured
+    if (!isSupabaseConfigured()) {
+      toast({
+        title: "Configuration Error",
+        description: "Backend services are not properly configured.",
+        variant: "destructive"
+      });
+      setIsLoading(false);
+      return;
+    }
+
     try {
+      console.log("Creating auth user with:", { email: values.email, role: values.role });
+      
       // Create authentication user first
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: values.email,
@@ -93,42 +106,57 @@ export default function SignupForm({ onClose }: SignupFormProps) {
         },
       });
 
-      if (authError) throw authError;
+      if (authError) {
+        console.error("Auth signup error:", authError);
+        throw authError;
+      }
+
+      console.log("Auth signup successful:", authData);
 
       if (authData.user) {
-        // Now create the user profile in our users table
+        // Now create the user profile in the users table
+        const userInsertData = {
+          name: values.name,
+          email: values.email,
+          password_hash: 'stored_in_auth', // Supabase Auth handles password
+          role: values.role,
+          phone_number: values.phone_number || null,
+          date_of_birth: values.date_of_birth ? values.date_of_birth.toISOString().split('T')[0] : null,
+          gender: values.gender || null,
+          address: values.address || null,
+          pregnancy_status: values.gender === 'female' ? values.pregnancy_status : null,
+          emergency_contact: values.emergency_contact || null,
+          medical_history: values.medical_history || null,
+          blood_type: values.blood_type || null,
+          allergies: values.allergies || null,
+          chronic_conditions: values.chronic_conditions || null,
+        };
+        
+        console.log("Inserting user profile data:", userInsertData);
+        
         const { error: profileError } = await supabase
           .from('users')
-          .insert({
-            name: values.name,
-            email: values.email,
-            password_hash: 'stored_in_auth', // Supabase Auth handles password
-            role: values.role,
-            phone_number: values.phone_number || null,
-            date_of_birth: values.date_of_birth ? values.date_of_birth.toISOString().split('T')[0] : null,
-            gender: values.gender || null,
-            address: values.address || null,
-            pregnancy_status: values.gender === 'female' ? values.pregnancy_status : null,
-            emergency_contact: values.emergency_contact || null,
-            medical_history: values.medical_history || null,
-            blood_type: values.blood_type || null,
-            allergies: values.allergies || null,
-            chronic_conditions: values.chronic_conditions || null,
-          });
+          .insert(userInsertData);
 
-        if (profileError) throw profileError;
+        if (profileError) {
+          console.error("User profile insert error:", profileError);
+          throw profileError;
+        }
 
         toast({
           title: 'Account created!',
-          description: 'You have successfully signed up.',
+          description: 'You have successfully signed up. Please verify your email to complete registration.',
         });
         
         onClose();
+        // Redirect to welcome or verification page
+        // window.location.href = '/verification';
       }
     } catch (error: any) {
+      console.error("Signup process failed:", error);
       toast({
         title: 'Signup failed',
-        description: error.message || 'There was an error creating your account',
+        description: error.message || 'There was an error creating your account. Please try again.',
         variant: 'destructive',
       });
     } finally {
