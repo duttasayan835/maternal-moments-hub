@@ -4,10 +4,13 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import AuthModal from '@/components/auth/AuthModal';
 import { Button } from '@/components/ui/button';
+import { isSupabaseConfigured } from '@/lib/supabase';
+import { AlertTriangle } from 'lucide-react';
 
 const Index = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>('signup');
+  const supabaseConfigured = isSupabaseConfigured();
 
   return (
     <motion.div
@@ -21,6 +24,13 @@ const Index = () => {
           <CardTitle className="text-3xl font-display bg-clip-text text-transparent bg-gradient-to-r from-maternal-600 to-maternal-800 dark:from-maternal-400 dark:to-maternal-600">
             Welcome to Maternal Moments
           </CardTitle>
+          
+          {!supabaseConfigured && (
+            <div className="mt-2 p-2 rounded-md bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-sm flex items-center">
+              <AlertTriangle className="h-4 w-4 mr-2 flex-shrink-0" />
+              <span>Demo Mode: Authentication and database features are not fully functional. Set Supabase environment variables to enable all features.</span>
+            </div>
+          )}
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-2 gap-8 items-center">

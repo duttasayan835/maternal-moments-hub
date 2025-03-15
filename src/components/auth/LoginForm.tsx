@@ -33,16 +33,33 @@ export default function LoginForm({ onClose }: LoginFormProps) {
   const handleLogin = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
 
+    // Check if Supabase is properly configured
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+      toast({
+        title: "Authentication Error",
+        description: "Backend configuration is incomplete. Please contact support.",
+        variant: "destructive"
+      });
+      setIsLoading(false);
+      return;
+    }
+
     try {
+      console.log("Attempting login with:", { email: values.email });
       const { data, error } = await supabase.auth.signInWithPassword({
         email: values.email,
         password: values.password,
       });
 
       if (error) {
+        console.error("Login error:", error);
         throw error;
       }
 
+      console.log("Login successful:", data);
       toast({
         title: 'Welcome back!',
         description: 'You have successfully logged in.',
@@ -50,9 +67,10 @@ export default function LoginForm({ onClose }: LoginFormProps) {
       
       onClose();
     } catch (error: any) {
+      console.error("Login failed:", error);
       toast({
         title: 'Login failed',
-        description: error.message || 'Please check your credentials and try again',
+        description: error.message || 'Please check your credentials and try again. If this issue persists, verify your Supabase configuration.',
         variant: 'destructive',
       });
     } finally {
@@ -90,6 +108,12 @@ export default function LoginForm({ onClose }: LoginFormProps) {
             </FormItem>
           )}
         />
+
+        {!import.meta.env.VITE_SUPABASE_URL && (
+          <div className="text-xs text-amber-600 dark:text-amber-400 p-2 bg-amber-50 dark:bg-amber-900/20 rounded border border-amber-200 dark:border-amber-800">
+            Note: Authentication is currently in demo mode. Backend services are not fully configured.
+          </div>
+        )}
 
         <Button 
           type="submit" 

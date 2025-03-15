@@ -1,6 +1,5 @@
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -8,9 +7,11 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from '@/components/ui/dialog';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
+import { isSupabaseConfigured } from '@/lib/supabase';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -19,6 +20,12 @@ interface AuthModalProps {
 
 export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>('login');
+  const [supabaseReady, setSupabaseReady] = useState<boolean>(false);
+  
+  useEffect(() => {
+    // Check if Supabase is configured
+    setSupabaseReady(isSupabaseConfigured());
+  }, []);
 
   return (
     <Dialog open={isOpen} onOpenChange={isOpen => !isOpen && onClose()}>
@@ -27,6 +34,11 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
           <DialogTitle className="text-2xl font-bold">
             {activeTab === 'login' ? 'Login' : 'Sign Up'}
           </DialogTitle>
+          {!supabaseReady && (
+            <DialogDescription className="text-amber-600 dark:text-amber-400">
+              Backend services are in demo mode. For full functionality, Supabase configuration is required.
+            </DialogDescription>
+          )}
           <Button
             variant="ghost"
             size="icon"
