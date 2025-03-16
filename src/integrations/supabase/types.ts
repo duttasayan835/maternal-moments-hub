@@ -9,7 +9,57 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      users: {
+        Row: {
+          address: string | null
+          allergies: string | null
+          blood_type: string | null
+          chronic_conditions: string | null
+          created_at: string | null
+          date_of_birth: string | null
+          email: string | null
+          emergency_contact: string | null
+          gender: string | null
+          id: string
+          medical_history: string | null
+          name: string | null
+          phone_number: string | null
+          pregnancy_status: string | null
+        }
+        Insert: {
+          address?: string | null
+          allergies?: string | null
+          blood_type?: string | null
+          chronic_conditions?: string | null
+          created_at?: string | null
+          date_of_birth?: string | null
+          email?: string | null
+          emergency_contact?: string | null
+          gender?: string | null
+          id: string
+          medical_history?: string | null
+          name?: string | null
+          phone_number?: string | null
+          pregnancy_status?: string | null
+        }
+        Update: {
+          address?: string | null
+          allergies?: string | null
+          blood_type?: string | null
+          chronic_conditions?: string | null
+          created_at?: string | null
+          date_of_birth?: string | null
+          email?: string | null
+          emergency_contact?: string | null
+          gender?: string | null
+          id?: string
+          medical_history?: string | null
+          name?: string | null
+          phone_number?: string | null
+          pregnancy_status?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
