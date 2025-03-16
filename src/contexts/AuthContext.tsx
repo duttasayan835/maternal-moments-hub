@@ -19,6 +19,44 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
+  // This function ensures a user record exists in the public users table
+  const ensureUserExists = async (user: User) => {
+    try {
+      // Check if user exists
+      const { data, error } = await supabase
+        .from('users')
+        .select('id')
+        .eq('id', user.id);
+      
+      if (error) {
+        console.error('Error checking if user exists:', error);
+        return;
+      }
+      
+      // If user doesn't exist, create a new record
+      if (!data || data.length === 0) {
+        const userName = user.user_metadata?.name || '';
+        const userEmail = user.email || '';
+        
+        const { error: insertError } = await supabase
+          .from('users')
+          .insert({ 
+            id: user.id,
+            name: userName,
+            email: userEmail
+          });
+        
+        if (insertError) {
+          console.error('Error creating user record:', insertError);
+        } else {
+          console.log('Created new user record');
+        }
+      }
+    } catch (err) {
+      console.error('Error in ensureUserExists:', err);
+    }
+  };
+
   useEffect(() => {
     async function getInitialSession() {
       try {
@@ -34,6 +72,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         
         setSession(session);
         setUser(session?.user ?? null);
+        
+        // If user is logged in, ensure user record exists
+        if (session?.user) {
+          await ensureUserExists(session.user);
+        }
       } catch (error: any) {
         console.error('Auth initialization error:', error);
         toast({
@@ -54,6 +97,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.log(`Auth event: ${event}`);
         setSession(session);
         setUser(session?.user ?? null);
+        
+        // When user signs in, ensure user record exists
+        if (event === 'SIGNED_IN' && session?.user) {
+          await ensureUserExists(session.user);
+        }
       }
     );
 

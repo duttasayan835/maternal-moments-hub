@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -59,30 +58,63 @@ const ProfilePage = () => {
 
       try {
         setIsLoading(true);
+        
         const { data, error } = await supabase
           .from('users')
           .select('*')
-          .eq('id', user.id)
-          .single();
+          .eq('id', user.id);
 
         if (error) {
           console.error('Error fetching profile:', error);
           throw error;
         }
 
-        if (data) {
+        if (!data || data.length === 0) {
+          console.log('User profile not found, creating one...');
+          
+          const userName = user.user_metadata?.name || '';
+          const userEmail = user.email || '';
+          
+          const { error: insertError } = await supabase
+            .from('users')
+            .insert({ 
+              id: user.id,
+              name: userName,
+              email: userEmail
+            });
+
+          if (insertError) {
+            console.error('Error creating user profile:', insertError);
+            throw insertError;
+          }
+
           form.reset({
-            name: data.name || '',
-            email: data.email || user.email || '',
-            phone_number: data.phone_number || '',
-            date_of_birth: data.date_of_birth || '',
-            gender: data.gender || '',
-            address: data.address || '',
-            emergency_contact: data.emergency_contact || '',
-            medical_history: data.medical_history || '',
-            blood_type: data.blood_type || '',
-            allergies: data.allergies || '',
-            chronic_conditions: data.chronic_conditions || '',
+            name: userName,
+            email: userEmail,
+            phone_number: '',
+            date_of_birth: '',
+            gender: '',
+            address: '',
+            emergency_contact: '',
+            medical_history: '',
+            blood_type: '',
+            allergies: '',
+            chronic_conditions: '',
+          });
+        } else {
+          const userData = data[0];
+          form.reset({
+            name: userData.name || '',
+            email: userData.email || user.email || '',
+            phone_number: userData.phone_number || '',
+            date_of_birth: userData.date_of_birth || '',
+            gender: userData.gender || '',
+            address: userData.address || '',
+            emergency_contact: userData.emergency_contact || '',
+            medical_history: userData.medical_history || '',
+            blood_type: userData.blood_type || '',
+            allergies: userData.allergies || '',
+            chronic_conditions: userData.chronic_conditions || '',
           });
         }
       } catch (error) {
