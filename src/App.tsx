@@ -21,6 +21,7 @@ import DashboardPage from "./pages/Dashboard";
 import ProfilePage from "./pages/Profile";
 import AppointmentsPage from "./pages/Appointments";
 import MedicalRecordsPage from "./pages/MedicalRecords";
+import ReportAnalyzerPage from "./pages/ReportAnalyzer";
 
 // Initialize QueryClient
 const queryClient = new QueryClient({
@@ -79,6 +80,11 @@ const AnimatedRoutes = () => {
         <Route path="/medical-records" element={
           <ProtectedRoute>
             <MedicalRecordsPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/report-analyzer" element={
+          <ProtectedRoute>
+            <ReportAnalyzerPage />
           </ProtectedRoute>
         } />
         <Route path="*" element={<NotFound />} />

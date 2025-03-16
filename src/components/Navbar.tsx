@@ -1,11 +1,10 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LogIn, LogOut, User } from 'lucide-react';
+import { LogIn, LogOut, User, BarChart2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AuthModal from './auth/AuthModal';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import {
   DropdownMenu,
@@ -39,12 +38,10 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    // Check if user is already logged in
     const checkUser = async () => {
       const { data } = await supabase.auth.getSession();
       if (data.session) {
         setIsLoggedIn(true);
-        // Try to get user info
         const { data: userData } = await supabase.auth.getUser();
         if (userData.user?.user_metadata?.name) {
           setUsername(userData.user.user_metadata.name);
@@ -56,12 +53,10 @@ const Navbar = () => {
 
     checkUser();
 
-    // Set up auth state change listener
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (event === 'SIGNED_IN' && session) {
           setIsLoggedIn(true);
-          // Try to get user info
           if (session.user?.user_metadata?.name) {
             setUsername(session.user.user_metadata.name);
           } else {
@@ -126,7 +121,6 @@ const Navbar = () => {
               </motion.div>
             </Link>
 
-            {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-1">
               {navLinks.map((link) => (
                 <Link
@@ -153,7 +147,6 @@ const Navbar = () => {
                 </Link>
               ))}
 
-              {/* User Menu */}
               <div className="flex items-center space-x-2 pl-4">
                 {isLoggedIn ? (
                   <DropdownMenu>
@@ -171,6 +164,12 @@ const Navbar = () => {
                       </DropdownMenuItem>
                       <DropdownMenuItem>
                         <Link to="/appointments" className="w-full">Appointments</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link to="/report-analyzer" className="w-full flex items-center">
+                          <BarChart2 className="mr-2 h-4 w-4" />
+                          Report Analyzer
+                        </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem>
                         <Link to="/medical-records" className="w-full">Medical Records</Link>
@@ -195,9 +194,7 @@ const Navbar = () => {
               </div>
             </nav>
 
-            {/* Mobile Menu Button */}
             <div className="flex items-center md:hidden">
-              {/* Login/Signup Button for Mobile */}
               {isLoggedIn ? (
                 <Button 
                   variant="ghost" 
@@ -218,7 +215,6 @@ const Navbar = () => {
                 </Button>
               )}
 
-              {/* Hamburger Menu */}
               <button
                 className="flex items-center"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -246,7 +242,6 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         <motion.div
           initial={false}
           animate={isMobileMenuOpen ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
@@ -270,7 +265,6 @@ const Navbar = () => {
                 </Link>
               ))}
               
-              {/* Login status for mobile */}
               {isLoggedIn ? (
                 <div className="space-y-2 border-t pt-2 mt-2">
                   <div className="px-4 py-1 text-sm font-medium text-gray-500">
@@ -289,6 +283,21 @@ const Navbar = () => {
                     className="px-4 py-2 rounded-md text-sm font-medium block"
                   >
                     Appointments
+                  </Link>
+                  <Link
+                    to="/report-analyzer"
+                    onClick={closeMobileMenu}
+                    className="px-4 py-2 rounded-md text-sm font-medium flex items-center"
+                  >
+                    <BarChart2 className="mr-2 h-4 w-4" />
+                    Report Analyzer
+                  </Link>
+                  <Link
+                    to="/medical-records"
+                    onClick={closeMobileMenu}
+                    className="px-4 py-2 rounded-md text-sm font-medium block"
+                  >
+                    Medical Records
                   </Link>
                   <Button 
                     variant="outline" 
@@ -317,7 +326,6 @@ const Navbar = () => {
         </motion.div>
       </motion.header>
 
-      {/* Auth Modal */}
       <AuthModal 
         isOpen={isAuthModalOpen} 
         onClose={() => setIsAuthModalOpen(false)} 

@@ -1,42 +1,78 @@
-
-import { useState } from 'react';
-import { LogIn } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import AuthModal from './AuthModal';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { isSupabaseConfigured } from '@/lib/supabase';
 
-export default function AuthButton() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+interface AuthButtonProps {
+  onSignIn?: () => void;
+  onSignOut?: () => void;
+}
+
+const AuthButton: React.FC<AuthButtonProps> = ({ onSignIn, onSignOut }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { toast } = useToast();
 
-  const handleAuthClick = () => {
-    // Check if Supabase credentials are properly configured
-    if (!isSupabaseConfigured()) {
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      const { data } = await supabase.auth.getSession();
+      setIsLoggedIn(!!data?.session);
+    };
+
+    checkAuthStatus();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      setIsLoggedIn(event === 'SIGNED_IN');
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, []);
+
+  const handleSignIn = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+    });
+
+    if (error) {
       toast({
-        title: "Configuration Required",
-        description: "Supabase credentials are not set. Please configure the environment variables.",
-        variant: "destructive"
+        title: 'Error signing in',
+        description: error.message,
+        variant: 'destructive',
       });
-      console.warn("Supabase credentials missing or invalid.");
-      return;
     }
 
-    setIsModalOpen(true);
+    onSignIn?.();
+  };
+
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      toast({
+        title: 'Error signing out',
+        description: error.message,
+        variant: 'destructive',
+      });
+    } else {
+      toast({
+        title: 'Signed out',
+        description: 'You have been successfully signed out.',
+      });
+    }
+
+    onSignOut?.();
   };
 
   return (
     <>
-      <Button 
-        variant="outline" 
-        className="border-maternal-200 hover:bg-maternal-50"
-        onClick={handleAuthClick}
-      >
-        <LogIn className="mr-2 h-4 w-4" />
-        Login / Signup
-      </Button>
-      
-      <AuthModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      {isLoggedIn ? (
+        <Button onClick={handleSignOut}>Sign Out</Button>
+      ) : (
+        <Button onClick={handleSignIn}>Sign In with Google</Button>
+      )}
     </>
   );
-}
+};
+
+export default AuthButton;

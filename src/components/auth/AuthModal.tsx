@@ -1,85 +1,68 @@
-
-import { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { 
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
+import { useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
-import { isSupabaseConfigured } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
-  const [activeTab, setActiveTab] = useState<'login' | 'signup'>('login');
-  const [supabaseReady, setSupabaseReady] = useState<boolean>(false);
-  
-  useEffect(() => {
-    // Check if Supabase is configured
-    setSupabaseReady(isSupabaseConfigured());
-  }, []);
+const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
+  const [isLogin, setIsLogin] = useState(true);
+  const { toast } = useToast();
+
+  const handleOAuthSignIn = async (provider: 'google' | 'github') => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: provider,
+        options: {
+          redirectTo: `${window.location.origin}/home`,
+        },
+      });
+
+      if (error) {
+        console.error('OAuth sign-in error:', error);
+        toast({
+          title: 'OAuth Sign-In Failed',
+          description: error.message || 'An error occurred during OAuth sign-in.',
+          variant: 'destructive',
+        });
+      }
+    } catch (error: any) {
+      console.error('OAuth sign-in error:', error);
+      toast({
+        title: 'OAuth Sign-In Failed',
+        description: error.message || 'An unexpected error occurred.',
+        variant: 'destructive',
+      });
+    }
+  };
 
   return (
-    <Dialog open={isOpen} onOpenChange={isOpen => !isOpen && onClose()}>
-      <DialogContent className="sm:max-w-md">
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">
-            {activeTab === 'login' ? 'Login' : 'Sign Up'}
-          </DialogTitle>
-          {!supabaseReady && (
-            <DialogDescription className="text-amber-600 dark:text-amber-400">
-              Backend services are in demo mode. For full functionality, Supabase configuration is required.
-            </DialogDescription>
-          )}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute right-4 top-4 rounded-full"
-            onClick={onClose}
-          >
-            <X className="h-5 w-5" />
-          </Button>
+          <DialogTitle>{isLogin ? "Login" : "Create an account"}</DialogTitle>
         </DialogHeader>
-        
-        <div className="mb-6 flex space-x-2 border-b">
-          <button
-            className={`py-2 px-4 ${
-              activeTab === 'login'
-                ? 'border-b-2 border-maternal-600 font-semibold'
-                : 'text-gray-500'
-            }`}
-            onClick={() => setActiveTab('login')}
-          >
-            Login
-          </button>
-          <button
-            className={`py-2 px-4 ${
-              activeTab === 'signup'
-                ? 'border-b-2 border-maternal-600 font-semibold'
-                : 'text-gray-500'
-            }`}
-            onClick={() => setActiveTab('signup')}
-          >
-            Sign Up
-          </button>
-        </div>
-
-        <div className="py-2">
-          {activeTab === 'login' ? (
-            <LoginForm onClose={onClose} />
-          ) : (
-            <SignupForm onClose={onClose} />
-          )}
-        </div>
+        <Tabs defaultValue={isLogin ? "login" : "signup"} className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="login" onClick={() => setIsLogin(true)}>Login</TabsTrigger>
+            <TabsTrigger value="signup" onClick={() => setIsLogin(false)}>Sign Up</TabsTrigger>
+          </TabsList>
+          <TabsContent value="login">
+            <LoginForm onClose={onClose} onOAuthSignIn={handleOAuthSignIn} />
+          </TabsContent>
+          <TabsContent value="signup">
+            <SignupForm onClose={onClose} onOAuthSignIn={handleOAuthSignIn} />
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default AuthModal;

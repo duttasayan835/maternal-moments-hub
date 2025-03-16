@@ -1,11 +1,13 @@
-
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import AuthModal from '@/components/auth/AuthModal';
 import { Button } from '@/components/ui/button';
 import { isSupabaseConfigured } from '@/lib/supabase';
 import { AlertTriangle } from 'lucide-react';
+import PageTransition from '@/components/PageTransition';
+import { supabase } from '@/integrations/supabase/client';
+import AuthModal from '@/components/auth/AuthModal';
 
 const Index = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);

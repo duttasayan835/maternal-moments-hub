@@ -1,24 +1,19 @@
-
 import { useState } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { Input } from '@/components/ui/input';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-
-interface LoginFormProps {
-  onClose: () => void;
-}
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
-  password: z.string().min(1, { message: "Password cannot be empty." }),
+  password: z.string().min(8, { message: "Password must be at least 8 characters." }),
 });
 
-export default function LoginForm({ onClose }: LoginFormProps) {
+const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -30,56 +25,42 @@ export default function LoginForm({ onClose }: LoginFormProps) {
     },
   });
 
-  const handleLogin = async (values: z.infer<typeof formSchema>) => {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-
-    // Check if Supabase is properly configured
-    if (!isSupabaseConfigured()) {
-      toast({
-        title: "Authentication Error",
-        description: "Backend configuration is incomplete. Please contact support.",
-        variant: "destructive"
-      });
-      setIsLoading(false);
-      return;
-    }
-
     try {
-      console.log("Attempting login with:", { email: values.email });
       const { data, error } = await supabase.auth.signInWithPassword({
         email: values.email,
         password: values.password,
       });
 
       if (error) {
-        console.error("Login error:", error);
-        throw error;
+        console.error('Login error:', error);
+        toast({
+          title: "Login Failed",
+          description: error.message || "Invalid credentials. Please try again.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Login Successful",
+          description: "You have successfully logged in.",
+        });
       }
-
-      console.log("Login successful:", data);
-      toast({
-        title: 'Welcome back!',
-        description: 'You have successfully logged in.',
-      });
-      
-      onClose();
-      // Redirect to dashboard or home page after successful login
-      window.location.href = '/home';
     } catch (error: any) {
-      console.error("Login failed:", error);
+      console.error('Login error:', error);
       toast({
-        title: 'Login failed',
-        description: 'Invalid email or password. Please try again.',
-        variant: 'destructive',
+        title: "Login Failed",
+        description: error.message || "An unexpected error occurred. Please try again.",
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
     }
-  };
+  }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleLogin)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="email"
@@ -87,13 +68,12 @@ export default function LoginForm({ onClose }: LoginFormProps) {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your email" {...field} />
+                <Input placeholder="Enter your email" type="email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        
         <FormField
           control={form.control}
           name="password"
@@ -101,21 +81,18 @@ export default function LoginForm({ onClose }: LoginFormProps) {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Enter your password" {...field} />
+                <Input placeholder="Enter your password" type="password" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-
-        <Button 
-          type="submit" 
-          className="w-full mt-6 bg-maternal-600 hover:bg-maternal-700"
-          disabled={isLoading}
-        >
-          {isLoading ? 'Logging in...' : 'Login'}
+        <Button disabled={isLoading} className="w-full" type="submit">
+          {isLoading ? "Logging in..." : "Login"}
         </Button>
       </form>
     </Form>
   );
-}
+};
+
+export default LoginForm;
