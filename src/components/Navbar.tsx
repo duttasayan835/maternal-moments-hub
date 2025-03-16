@@ -2,9 +2,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Moon, Sun, LogIn, LogOut, User } from 'lucide-react';
+import { LogIn, LogOut, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useTheme } from '@/providers/ThemeProvider';
 import AuthModal from './auth/AuthModal';
 import { supabase } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
@@ -24,7 +23,6 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const location = useLocation();
-  const { theme, toggleTheme } = useTheme();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -137,13 +135,13 @@ const Navbar = () => {
                   className={`relative px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
                     location.pathname === link.path
                       ? 'text-maternal-700'
-                      : 'text-gray-600 hover:text-maternal-600 dark:text-gray-300 dark:hover:text-maternal-400'
+                      : 'text-gray-600 hover:text-maternal-600'
                   }`}
                 >
                   {location.pathname === link.path && (
                     <motion.div
                       layoutId="navbar-indicator"
-                      className="absolute inset-0 bg-maternal-100 dark:bg-maternal-900/20 rounded-md -z-10"
+                      className="absolute inset-0 bg-maternal-100 rounded-md -z-10"
                       transition={{ 
                         type: "spring", 
                         stiffness: 500, 
@@ -187,48 +185,18 @@ const Navbar = () => {
                 ) : (
                   <Button 
                     variant="outline" 
-                    className="border-maternal-200 hover:bg-maternal-50 dark:border-maternal-800 dark:hover:bg-maternal-900"
+                    className="border-maternal-200 hover:bg-maternal-50"
                     onClick={() => setIsAuthModalOpen(true)}
                   >
                     <LogIn className="mr-2 h-4 w-4" />
                     <span className="hidden sm:inline">Login / Signup</span>
                   </Button>
                 )}
-
-                {/* Theme Toggle */}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-full"
-                  onClick={toggleTheme}
-                  aria-label="Toggle theme"
-                >
-                  {theme === 'light' ? (
-                    <Moon className="h-5 w-5" />
-                  ) : (
-                    <Sun className="h-5 w-5" />
-                  )}
-                </Button>
               </div>
             </nav>
 
             {/* Mobile Menu Button */}
             <div className="flex items-center md:hidden">
-              {/* Theme Toggle for Mobile */}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="mr-2 rounded-full"
-                onClick={toggleTheme}
-                aria-label="Toggle theme"
-              >
-                {theme === 'light' ? (
-                  <Moon className="h-5 w-5" />
-                ) : (
-                  <Sun className="h-5 w-5" />
-                )}
-              </Button>
-
               {/* Login/Signup Button for Mobile */}
               {isLoggedIn ? (
                 <Button 
@@ -258,17 +226,17 @@ const Navbar = () => {
               >
                 <div className="relative w-6 h-5">
                   <span
-                    className={`absolute h-0.5 w-6 bg-gray-800 dark:bg-gray-200 transform transition-all duration-300 ease-in-out ${
+                    className={`absolute h-0.5 w-6 bg-gray-800 transform transition-all duration-300 ease-in-out ${
                       isMobileMenuOpen ? 'rotate-45 top-2' : 'top-0'
                     }`}
                   />
                   <span
-                    className={`absolute h-0.5 w-6 bg-gray-800 dark:bg-gray-200 top-2 transition-all duration-300 ease-in-out ${
+                    className={`absolute h-0.5 w-6 bg-gray-800 top-2 transition-all duration-300 ease-in-out ${
                       isMobileMenuOpen ? 'opacity-0' : 'opacity-100'
                     }`}
                   />
                   <span
-                    className={`absolute h-0.5 w-6 bg-gray-800 dark:bg-gray-200 transform transition-all duration-300 ease-in-out ${
+                    className={`absolute h-0.5 w-6 bg-gray-800 transform transition-all duration-300 ease-in-out ${
                       isMobileMenuOpen ? '-rotate-45 top-2' : 'top-4'
                     }`}
                   />
@@ -294,8 +262,8 @@ const Navbar = () => {
                   onClick={closeMobileMenu}
                   className={`px-4 py-2 rounded-md text-sm font-medium ${
                     location.pathname === link.path
-                      ? 'bg-maternal-100 dark:bg-maternal-900/30 text-maternal-700 dark:text-maternal-400'
-                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50'
+                      ? 'bg-maternal-100 text-maternal-700'
+                      : 'text-gray-600 hover:bg-gray-50'
                   }`}
                 >
                   {link.label}
@@ -356,6 +324,6 @@ const Navbar = () => {
       />
     </>
   );
-};
+}
 
 export default Navbar;

@@ -17,16 +17,16 @@ const Index = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-r from-maternal-100 to-maternal-200 dark:from-maternal-900 dark:to-maternal-800"
+      className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-r from-maternal-100 to-maternal-200"
     >
-      <Card className="w-full max-w-4xl bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-xl">
+      <Card className="w-full max-w-4xl bg-white/90 backdrop-blur-sm shadow-xl">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-display bg-clip-text text-transparent bg-gradient-to-r from-maternal-600 to-maternal-800 dark:from-maternal-400 dark:to-maternal-600">
+          <CardTitle className="text-3xl font-display bg-clip-text text-transparent bg-gradient-to-r from-maternal-600 to-maternal-800">
             Welcome to Maternal Moments
           </CardTitle>
           
           {!supabaseConfigured && (
-            <div className="mt-2 p-2 rounded-md bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-sm flex items-center">
+            <div className="mt-2 p-2 rounded-md bg-amber-50 text-amber-700 text-sm flex items-center">
               <AlertTriangle className="h-4 w-4 mr-2 flex-shrink-0" />
               <span>Demo Mode: Authentication and database features are not fully functional. Set Supabase environment variables to enable all features.</span>
             </div>
@@ -36,7 +36,7 @@ const Index = () => {
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="space-y-4">
               <h2 className="text-2xl font-semibold">Your Journey Starts Here</h2>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-600">
                 Join our community for expert guidance through your pregnancy and parenting journey. 
                 Access personalized care, medical insights, and connect with professionals.
               </p>
@@ -53,7 +53,7 @@ const Index = () => {
                 </Button>
                 <Button 
                   variant="outline" 
-                  className="border-maternal-200 dark:border-maternal-800"
+                  className="border-maternal-200"
                   size="lg"
                   onClick={() => {
                     setActiveTab('login');
@@ -64,27 +64,27 @@ const Index = () => {
                 </Button>
               </div>
             </div>
-            <div className="bg-maternal-100 dark:bg-maternal-900/50 p-6 rounded-lg">
+            <div className="bg-maternal-100 p-6 rounded-lg">
               <h3 className="text-xl font-medium mb-4">Why Join Us?</h3>
               <ul className="space-y-2">
                 <li className="flex items-start">
-                  <span className="mr-2 text-maternal-600 dark:text-maternal-400">✓</span>
+                  <span className="mr-2 text-maternal-600">✓</span>
                   <span>Personalized pregnancy tracking and guidance</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2 text-maternal-600 dark:text-maternal-400">✓</span>
+                  <span className="mr-2 text-maternal-600">✓</span>
                   <span>Connect with qualified healthcare professionals</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2 text-maternal-600 dark:text-maternal-400">✓</span>
+                  <span className="mr-2 text-maternal-600">✓</span>
                   <span>Schedule appointments and consultations</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2 text-maternal-600 dark:text-maternal-400">✓</span>
+                  <span className="mr-2 text-maternal-600">✓</span>
                   <span>Upload and analyze medical images</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2 text-maternal-600 dark:text-maternal-400">✓</span>
+                  <span className="mr-2 text-maternal-600">✓</span>
                   <span>Access expert parenting resources and community</span>
                 </li>
               </ul>

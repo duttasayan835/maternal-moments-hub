@@ -69,7 +69,7 @@ export default function LoginForm({ onClose }: LoginFormProps) {
       console.error("Login failed:", error);
       toast({
         title: 'Login failed',
-        description: error.message || 'Please check your credentials and try again.',
+        description: 'Invalid email or password. Please try again.',
         variant: 'destructive',
       });
     } finally {

@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { LogIn, User } from 'lucide-react';
+import { LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AuthModal from './AuthModal';
 import { useToast } from '@/hooks/use-toast';
@@ -29,7 +29,7 @@ export default function AuthButton() {
     <>
       <Button 
         variant="outline" 
-        className="border-maternal-200 hover:bg-maternal-50 dark:border-maternal-800 dark:hover:bg-maternal-900"
+        className="border-maternal-200 hover:bg-maternal-50"
         onClick={handleAuthClick}
       >
         <LogIn className="mr-2 h-4 w-4" />
