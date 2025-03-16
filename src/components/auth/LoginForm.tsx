@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,7 +14,11 @@ const formSchema = z.object({
   password: z.string().min(8, { message: "Password must be at least 8 characters." }),
 });
 
-const LoginForm = () => {
+interface LoginFormProps {
+  onClose: () => void;
+}
+
+const LoginForm = ({ onClose }: LoginFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -45,6 +50,7 @@ const LoginForm = () => {
           title: "Login Successful",
           description: "You have successfully logged in.",
         });
+        onClose();
       }
     } catch (error: any) {
       console.error('Login error:', error);

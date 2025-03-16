@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -12,7 +13,7 @@ interface AuthModalProps {
 }
 
 const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
-  const [isLogin, setIsLogin] = useState(true);
+  const [activeTab, setActiveTab] = useState<"login" | "signup">("login");
   const { toast } = useToast();
 
   const handleOAuthSignIn = async (provider: 'google' | 'github') => {
@@ -46,18 +47,18 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{isLogin ? "Login" : "Create an account"}</DialogTitle>
+          <DialogTitle>{activeTab === "login" ? "Login" : "Create an account"}</DialogTitle>
         </DialogHeader>
-        <Tabs defaultValue={isLogin ? "login" : "signup"} className="space-y-4">
+        <Tabs defaultValue={activeTab} className="space-y-4" onValueChange={(value) => setActiveTab(value as "login" | "signup")}>
           <TabsList>
-            <TabsTrigger value="login" onClick={() => setIsLogin(true)}>Login</TabsTrigger>
-            <TabsTrigger value="signup" onClick={() => setIsLogin(false)}>Sign Up</TabsTrigger>
+            <TabsTrigger value="login">Login</TabsTrigger>
+            <TabsTrigger value="signup">Sign Up</TabsTrigger>
           </TabsList>
           <TabsContent value="login">
-            <LoginForm onClose={onClose} onOAuthSignIn={handleOAuthSignIn} />
+            <LoginForm onClose={onClose} />
           </TabsContent>
           <TabsContent value="signup">
-            <SignupForm onClose={onClose} onOAuthSignIn={handleOAuthSignIn} />
+            <SignupForm onClose={onClose} />
           </TabsContent>
         </Tabs>
       </DialogContent>
